@@ -1,3 +1,13 @@
+"""Tiny BASIC IL interpreter.
+
+This file contains an interpreter for the Tiny BASIC interpretive language
+(IL), as described in Dr Dobb's Journal, Vol.1, No.1 (Jan 1976). The IL, in
+turn, is used to implement Tiny BASIC, a limited subset of BASIC intended to
+run on low-memory (2-4K) machines. See `tinybasic.il` for the BASIC interpreter
+written in IL.
+
+Run this file with the `-f` option to load a BASIC program on startup.
+"""
 import re
 
 
