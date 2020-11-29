@@ -311,6 +311,9 @@ class TinyBasicInterpreter:
                 n = int(input('# '))
             except ValueError:
                 print('Type a number.')
+            except EOFError:
+                self.user_quit = True
+                return
         self.expression_stack.insert(0, n)
 
 
