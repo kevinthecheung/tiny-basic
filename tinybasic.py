@@ -14,60 +14,60 @@ import re
 class TinyBasicInterpreter:
 
     def __init__(self, il_code='tinybasic.il', max_lines=256, autoload=[]):
+        self.pc = 0
+        self.il_program = []
+        self.il_labels = {}
+
+        self.line_buffer = ''
+        self.line_buffer_buffer = autoload
+        self.max_lines = max_lines
+        self.basic_linenum = 0
+        self.basic_program = ['' for _ in range(max_lines)]
+        self.basic_var_data = [0 for _ in range(26)]
+
+        self.expression_stack = []
+        self.control_stack = []
+        self.subroutine_stack = []
+
+        self.user_quit = False
+
         with open(il_code, 'r') as f:
-            self.pc = 0
-            self.il_program = []
-            self.il_labels = {}
-
-            self.line_buffer = ''
-            self.line_buffer_buffer = autoload
-            self.max_lines = max_lines
-            self.basic_linenum = 0
-            self.basic_program = ['' for _ in range(max_lines)]
-            self.basic_var_data = [0 for _ in range(26)]
-
-            self.expression_stack = []
-            self.control_stack = []
-            self.subroutine_stack = []
-
-            self.user_quit = False
-
             self.load_interpreter(f.readlines())
 
-            self.il_ops = {}
-            self.il_ops['ADD'] = self.il_add
-            self.il_ops['CMPR'] = self.il_cmpr
-            self.il_ops['DIV'] = self.il_div
-            self.il_ops['DONE'] = self.il_done
-            self.il_ops['FIN'] = self.il_fin
-            self.il_ops['GETLN'] = self.il_getln
-            self.il_ops['HOP'] = self.il_ijmp
-            self.il_ops['ICALL'] = self.il_icall
-            self.il_ops['IJMP'] = self.il_ijmp
-            self.il_ops['IND'] = self.il_ind
-            self.il_ops['INIT'] = self.il_init
-            self.il_ops['INNUM'] = self.il_innum
-            self.il_ops['INSRT'] = self.il_insrt
-            self.il_ops['LIT'] = self.il_lit
-            self.il_ops['LST'] = self.il_lst
-            self.il_ops['MPY'] = self.il_mpy
-            self.il_ops['NEG'] = self.il_neg
-            self.il_ops['NXT'] = self.il_nxt
-            self.il_ops['NLINE'] = self.il_nline
-            self.il_ops['PRN'] = self.il_prn
-            self.il_ops['PRS'] = self.il_prs
-            self.il_ops['RSTR'] = self.il_rstr
-            self.il_ops['RTN'] = self.il_rtn
-            self.il_ops['SAV'] = self.il_sav
-            self.il_ops['SPC'] = self.il_spc
-            self.il_ops['STORE'] = self.il_store
-            self.il_ops['SUB'] = self.il_sub
-            self.il_ops['TST'] = self.il_tst
-            self.il_ops['TSTL'] = self.il_tstl
-            self.il_ops['TSTN'] = self.il_tstn
-            self.il_ops['TSTV'] = self.il_tstv
-            self.il_ops['XINIT'] = self.il_xinit
-            self.il_ops['XFER'] = self.il_xfer
+        self.il_ops = {}
+        self.il_ops['ADD'] = self.il_add
+        self.il_ops['CMPR'] = self.il_cmpr
+        self.il_ops['DIV'] = self.il_div
+        self.il_ops['DONE'] = self.il_done
+        self.il_ops['FIN'] = self.il_fin
+        self.il_ops['GETLN'] = self.il_getln
+        self.il_ops['HOP'] = self.il_ijmp
+        self.il_ops['ICALL'] = self.il_icall
+        self.il_ops['IJMP'] = self.il_ijmp
+        self.il_ops['IND'] = self.il_ind
+        self.il_ops['INIT'] = self.il_init
+        self.il_ops['INNUM'] = self.il_innum
+        self.il_ops['INSRT'] = self.il_insrt
+        self.il_ops['LIT'] = self.il_lit
+        self.il_ops['LST'] = self.il_lst
+        self.il_ops['MPY'] = self.il_mpy
+        self.il_ops['NEG'] = self.il_neg
+        self.il_ops['NXT'] = self.il_nxt
+        self.il_ops['NLINE'] = self.il_nline
+        self.il_ops['PRN'] = self.il_prn
+        self.il_ops['PRS'] = self.il_prs
+        self.il_ops['RSTR'] = self.il_rstr
+        self.il_ops['RTN'] = self.il_rtn
+        self.il_ops['SAV'] = self.il_sav
+        self.il_ops['SPC'] = self.il_spc
+        self.il_ops['STORE'] = self.il_store
+        self.il_ops['SUB'] = self.il_sub
+        self.il_ops['TST'] = self.il_tst
+        self.il_ops['TSTL'] = self.il_tstl
+        self.il_ops['TSTN'] = self.il_tstn
+        self.il_ops['TSTV'] = self.il_tstv
+        self.il_ops['XINIT'] = self.il_xinit
+        self.il_ops['XFER'] = self.il_xfer
 
 
     def load_interpreter(self, lines):
