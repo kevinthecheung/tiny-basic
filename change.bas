@@ -1,10 +1,16 @@
+1 "CHANGE.BAS, from _BASIC Computer Games_ (1978), edited by David H. Ahl."
+1 "Reproduced at https://www.atariarchives.org/basicgames/showpage.php?page=39"
+1
+1 "Adapted for Tiny BASIC in 2020."
+1
 1 PRINT "","","CHANGE"
 2 PRINT "","CREATIVE COMPUTING  MORRISTOWN, NEW JERSEY"
 3 PRINT ""
-4 PRINT "","(Adapted for Tiny BASIC in 2020.)"
+4 PRINT ""
 5 PRINT ""
 6 PRINT "I, YOUR FRIENDLY MICROCOMPUTER, WILL DETERMINE"
-8 PRINT "THE CORRECT CHANGE FOR ITEMS COSTING UP TO $100."
+7 PRINT "THE CORRECT CHANGE FOR ITEMS COSTING UP TO $100."
+8 PRINT ""
 9 PRINT ""
 10 PRINT "COST OF ITEM"
 11 INPUT A
