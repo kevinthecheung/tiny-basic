@@ -72,24 +72,25 @@ class TinyBasicInterpreter:
 
     def load_interpreter(self, lines):
         for ln in lines:
-            match = re.fullmatch(r'\s*(?P<label>\w+:)?\s*(?P<statement>[^;]*)(?P<comment>;.*)?\s*', ln)
+            bareln = ln.split(';', maxsplit=1)[0].strip()
+            match = re.fullmatch(r'(?P<label>\w+:)?\s*(?P<instr>\w+)?\s*(?P<op1>[^,]+)?,?(?P<op2>\S+)?', bareln)
             label = match.group('label')
-            statement = match.group('statement').strip()
-            comment = match.group('comment')
-            if statement != '':
-                stm = statement.split()
-                if stm[0] == 'DB':
-                    db_arg = stm[1]
-                    db_arg = ',' if db_arg == "','" else db_arg.replace(',', '').replace("'", '')  # TODO: sketchy
-                    self.il_program[-1].append(db_arg)
-                else:
-                    self.il_program.append(stm)
-                    if label is not None:
-                        label = label.strip(':')
-                        if label in self.il_labels:
-                            raise Exception
-                        self.il_labels[label] = len(self.il_program) - 1
-                pass
+            instr = match.group('instr')
+            op1 = match.group('op1')
+            op2 = match.group('op2')
+            if instr is not None:
+                stmt = [instr]
+                if op1 is not None:
+                    stmt.append(op1)
+                if op1 is not None and op2 is not None:
+                    stmt.append(op2.strip("'"))
+                self.il_program.append(stmt)
+                if label is not None:
+                    label = label.strip(':')
+                    if label in self.il_labels:
+                        raise Exception
+                    self.il_labels[label] = len(self.il_program) - 1
+            pass
 
     #
     # Syntax parsing instructions
