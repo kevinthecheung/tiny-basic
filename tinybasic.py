@@ -97,7 +97,7 @@ class TinyBasicInterpreter:
 
     def il_done(self):
         if self.line_buffer.strip() != '':
-            print(f'Syntax error at line {self.basic_linenum}.')
+            print(f'Syntax error at line {self.basic_linenum - 1}.')
             self.pc = self.il_labels['ERRENT']
 
 
@@ -197,29 +197,27 @@ class TinyBasicInterpreter:
             line_num += self.line_buffer[:1]
             self.line_buffer = self.line_buffer[1:]
         self.basic_program[int(line_num)] = self.line_buffer.strip()
+        self.line_buffer = ''
 
 
     def il_nxt(self):
         if self.basic_linenum == 0:
             self.pc = self.il_labels['CO']
         else:
-            self.line_buffer = self.basic_program[self.basic_linenum]
-            self.basic_linenum += 1
             while (self.basic_linenum < self.max_lines
                    and self.basic_program[self.basic_linenum].strip() == ''):
                 self.basic_linenum += 1
             if self.basic_linenum == self.max_lines:
                 self.basic_linenum = 0
-            self.pc = self.il_labels['XEC']
+                self.pc = self.il_labels['CO']
+            else:
+                self.line_buffer = self.basic_program[self.basic_linenum]
+                self.basic_linenum += 1
+                self.pc = self.il_labels['XEC']
 
 
     def il_xfer(self):
         loc = self.expression_stack.pop(0)
-
-        # Special case for 'RUN' command: find first line
-        if loc == 1:
-            while self.basic_program[loc] == '':
-                loc += 1
 
         if 1 <= loc < self.max_lines:
             if self.basic_program[loc] != '':
@@ -298,8 +296,10 @@ class TinyBasicInterpreter:
             self.line_buffer = self.line_buffer_buffer.pop(0)
             print(f'? {self.line_buffer}', end='')
         else:
+            self.line_buffer = ''
             try:
-                self.line_buffer = input('? ')
+                while len(self.line_buffer) < 1:
+                    self.line_buffer = input('? ')
             except EOFError:
                 self.user_quit = True
 
@@ -358,11 +358,16 @@ class TinyBasicInterpreter:
     def il_xinit(self):
         self.expression_stack = []
 
+        # If line buffer is empty, 'RUN' command was issued
+        if len(self.line_buffer.strip()) < 1:
+            self.basic_linenum = 1
+            self.il_nxt()
+
     #########################################################################$
 
     def fail_test(self, dest_label):
         if self.pc - 1 == self.il_labels[dest_label]:
-            print(f'Syntax error at line {self.basic_linenum}.')
+            print(f'Syntax error at line {self.basic_linenum - 1}.')
             self.pc = self.il_labels['ERRENT']
         else:
             self.pc = self.il_labels[dest_label]
