@@ -54,6 +54,8 @@ TBX also abbreviated some keywords: `NEW` (instead of `CLEAR`), `LST`, `PR`,
 
 ## Examples
 
+### Tiny BASIC
+
 ```
 $ python3 tinybasic.py
 
@@ -149,6 +151,107 @@ THANK YOU, COME AGAIN.
 COST OF ITEM
 # ^C
 ? ^D
+```
+
+### TBX
+
+```
+% python3 tinybasic.py -x -f chomp.bas
+
+Tiny BASIC Extended (TBX)
+
+As published in Dr Dobb's Journal of Computer Calisthenics
+    and Orthodontia, Vol.1, Nos.1-2 (1976).
+
+Press ^C to break and ^D to quit.
+
+: 1 "CHOMP.BAS, from _BASIC Computer Games_ (1978), edited by David H. Ahl."
+: 1 "Reproduced at https://www.atariarchives.org/basicgames/showpage.php?page=44"
+: 1
+: 1 "Adapted for Tiny BASIC in 2020."
+: 1
+: 10 PR SP(33);"CHOMP"
+: 20 PR SP(15);"CREATIVE COMPUTING  MORRISTOWN, NEW JERSEY"
+: 30 PR$PR$PR
+: 40 DIM A(10,10)
+
+...
+
+: 1020 PR 
+: 1030 PR "AGAIN (1=YES, 0=NO!)";
+: 1040 IN R
+: 1050 IF R=1 GOTO 340
+: 1060 END
+: RUN
+                                  CHOMP
+                CREATIVE COMPUTING  MORRISTOWN, NEW JERSEY
+
+
+
+
+THIS IS THE GAME OF CHOMP (SCIENTIFIC AMERICAN, JAN 1973)
+DO YOU WANT THE RULES (1=YES, 0=NO!) ? 0
+
+HERE WE GO...
+
+HOW MANY PLAYERS ? 2
+
+HOW MANY ROWS ? 9
+
+HOW MANY COLUMNS ? 9
+
+
+
+        1  2  3  4  5  6  7  8  9
+1       P  *  *  *  *  *  *  *  *  
+2       *  *  *  *  *  *  *  *  *  
+3       *  *  *  *  *  *  *  *  *  
+4       *  *  *  *  *  *  *  *  *  
+5       *  *  *  *  *  *  *  *  *  
+6       *  *  *  *  *  *  *  *  *  
+7       *  *  *  *  *  *  *  *  *  
+8       *  *  *  *  *  *  *  *  *  
+9       *  *  *  *  *  *  *  *  *  
+
+PLAYER 1
+COORDINATES OF CHOMP (ROW,COLUMN) ? 2,1
+
+
+        1  2  3  4  5  6  7  8  9
+1       P  *  *  *  *  *  *  *  *  
+2       
+
+
+
+
+
+
+
+
+PLAYER 2
+COORDINATES OF CHOMP (ROW,COLUMN) ? 1,2
+
+
+        1  2  3  4  5  6  7  8  9
+1       P  
+
+
+
+
+
+
+
+
+
+PLAYER 1
+COORDINATES OF CHOMP (ROW,COLUMN) ? 1,1
+
+YOU LOSE, PLAYER 1
+
+AGAIN (1=YES, 0=NO!) ? 0
+
+
+: ^D
 ```
 
 ## References
