@@ -1,21 +1,28 @@
-# Tiny BASIC in Python
+# Tiny BASIC and Tiny BASIC Extended in Python
 
 Tiny BASIC is a limited subset of BASIC intended to run on low-memory (2-4K)
 machines. It was originally published in 1975 in the _People's Computer Company
 newsletter_ (Vol. 4, Nos. 2-3) and republished in the first issue of _Dr Dobb's
 Journal_.
 
-The original implementation, unlike its more popular descendants, had two
-parts: 1) the BASIC interpreter, written in Tiny BASIC interpretive language
-(IL), a special-purpose assembly language for an abstract machine; and 2) an IL
-interpreter, written for the target platform. The BASIC interpreter in IL was
-printed in _PCC_/_DDJ_, but the implementation of the IL interpreter was left
-as an exercise to the reader.
+Tiny BASIC Extended (TBX), published in the first issue of _Dr Dobb's Journal_,
+added support for arrays and `FOR` loops.
 
-This repository contains a complete Tiny BASIC implementation, in two parts:
+Tiny BASIC and TBX were implemented in two parts: 1) a BASIC interpreter,
+written in Tiny BASIC interpretive language (IL), a special-purpose assembly-
+like language for an abstract machine; and 2) an IL interpreter, written for
+the target platform. The Tiny BASIC interpreter in IL was printed in
+_PCC_/_DDJ_, but the implementation of the IL interpreter was left as an
+exercise to the reader. TBX was published with both an updated BASIC
+interpreter in IL and an IL interpreter for 8080 machines.
+
+This repository contains complete Tiny BASIC and TBX implementations, in three
+parts:
 
 - `tinybasic.il`: the Tiny BASIC interpreter, written in IL, as published in
-  _PCC_/_DDJ_ with some contemporary corrections.
+  _PCC_/_DDJ_ with some modern corrections.
+- `tbx.il`: the TBX interpreter, written in IL, as published in _DDJ_ with some
+  modern corrections.
 - `tinybasic.py`: an IL interpreter, written in Python.
 
 ## Language limitations
@@ -24,13 +31,26 @@ Because Tiny BASIC was designed to run on low-speed, low-memory microcomputers
 from the 1970s, it is quite limited, even for its time. Compared to its
 contemporaries, Tiny BASIC:
 
-- Only supports integer variables; no strings or floating-point values
+- Only supports integer variables; no arrays, strings or floating-point values
 - Only supports 26 variables, named `A`-`Z`
 - Only supports programs of up to 255 lines (this limitation is completely
   artificial in the Python IL interpreter, however; you can override it by
   passing an argument to the constructor)
 - Only supports the following commands: `CLEAR`, `RUN`, `LIST`, `PRINT`,
   `INPUT`, `LET`, `GOTO`, `GOSUB`, `RETURN`, and `IF`-`THEN`
+
+To Tiny BASIC, TBX added:
+
+- One- and two- dimensional arrays.
+- `FOR` loops and the `NXT` statement.
+- The `RN` function, which generates random numbers.
+- Two new print spacing commands: `;` to insert one space and `SP(n)` to insert
+  _n_ spaces.
+- Multiple statements per line, separated by `$`.
+- Programs of up to 65,535 lines.
+
+TBX also abbreviated some keywords: `NEW` (instead of `CLEAR`), `LST`, `PR`,
+`IN`, and `RET`.
 
 ## Examples
 
